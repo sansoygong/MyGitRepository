@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			
+			#myCanvas{
+				width:100%;
+				height: 100%;
+			}
+		</style>
+	</head>
+	<body>
+		<div style="width: 200px; height: 100px;">
+			<canvas id="myCanvas" width="200px" height="100px" style="border:1px solid #000;">
+		</div>
+	</body>
+	
+	<script>
+	
+		var canvas = document.getElementById('myCanvas');
+		//canvas.style.width = width + "px";
+		//canvas.style.height = height + "px";
+		canvas.width = canvas.width*2;
+		canvas.height = canvas.height*2;
+		ctx = canvas.getContext('2d');  
+		
+		
+
+		ctx.scale(2, 2);
+		var step,startAngle,endAngle;
+		add=Math.PI*2/100;//0.06283185307179587
+		ctx.shadowOffsetX = 0; // 设置水平位移
+		ctx.shadowOffsetY = 0; // 设置垂直位移
+		//ctx.shadowBlur = 10; // 设置模糊度
+		ctx.lineWidth = 3.0; 
+		counterClockwise = false;
+		var x;
+		var y;
+		var radius;
+		var animation_interval = 20,n = 100;
+		var varName;
+		
+		function actiondo(sangle,addcolorone,addcolortwo){
+			step=1;
+			startAngle=sangle;
+			var grad=ctx.createLinearGradient(0,0,150,0);
+			grad.addColorStop(0,addcolorone);//"#508eeb");                  //定义渐变色颜色
+			grad.addColorStop(1,addcolortwo);//"#50a1eb");
+			ctx.strokeStyle=grad;                         //设置fillStyle为当前的渐变对象
+			x=canvas.width/4;
+			y=canvas.height/4;
+			radius = Math.floor(0.10*50+35);
+			varName= setInterval(animation, animation_interval);
+	
+		}
+		
+		
+		var animation=function () {
+			if(step <= n){
+				//endAngle = startAngle + add ; 
+				endAngle = startAngle + 0.040000;
+				drawArc(startAngle, endAngle); 
+				startAngle = endAngle;
+				step++;
+			}else{
+				clearInterval(varName);
+				//actiondo(9,"#508eeb","#50a1eb");
+				
+			}
+			
+		};
+		
+		
+		function drawArc(s, e){
+			ctx.beginPath();
+			ctx.arc(x, y, radius, s, e, counterClockwise);
+			ctx.lineWidth = 10.0;
+			ctx.stroke();
+			
+		}
+		
+		actiondo(9,"#508eeb","#50a1eb");
+		
+		
+	</script>
+</html>

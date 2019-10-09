@@ -1,0 +1,228 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>轮播图</title>
+
+    <style>
+
+        *{padding:0; margin:0;}
+
+        li{list-style:none;}
+
+        a{text-decoration:none;}
+
+        #wrap{ width:600px; height:300px; border:1px solid #e15671; margin:auto; position:relative; }
+
+        #box{
+
+            margin:50px 100px; width:400px; height:200px; position:relative; background:red;overflow:hidden;
+
+        }
+
+        #wrap  .ul1{width:1600px; height:200px; position:absolute; left:0; top:0; }
+
+        #wrap  .ul1 li{float:left; width:400px; height:200px;}
+
+        #wrap  .ul1 img{width:100%; height:100%;}
+
+        #wrap .sp{position:absolute; top:95px; display:block; width:30px; height:60px;text-align:center; line-height:60px; color:#fff; background-color:rgba(0,0,0,.6);}
+
+        #wrap .sp1{left:20px;}
+
+        #wrap .sp2{right:20px;}
+
+        #wrap .p{position:absolute; bottom:0;width:100%;  text-align:center; height:50px; line-height:50px;}
+
+        #wrap .p a{display:inline-block; width:30px; height:2px; margin-left:10px; background-color:#e15671;}
+
+        #wrap .p  .active{background-color:#000;}
+
+ 
+
+    </style>
+
+</head>
+
+<body>
+
+<div id="wrap">
+
+    <div id="box">
+
+        <ul class="ul1">
+
+            <li><img src="../imgs/1.jpg"/></li>
+
+            <li><img src="../imgs/2.jpg"/></li>
+
+            <li><img src="../imgs/3.jpg"/></li>
+
+            <li><img src="../imgs/4.jpg"/></li>
+
+        </ul>
+
+    </div>
+
+    <span class="sp sp1"><</span>
+
+    <span class="sp sp2">></span>
+
+    <p class="p"><a class="active" href="#"></a><a href="#"></a><a href="#"></a><a href="#"></a></p>
+
+</div>
+
+<script src="js/jquery-1.7.2.min.js"></script>
+
+<script>
+
+    $(function(){
+
+        var first = $('.ul1').find('li').first();
+
+        var last = $('.ul1').find('li').last();
+
+        var len = $('li').size();
+
+        var i=0;
+
+        var oBtn = true;
+
+        var width = $('li').width();//获取一个li的宽度
+
+        //克隆第一张和最后一个图片，方便后面的无缝轮播的实现
+
+        $('.ul1').prepend(last.clone());
+
+        $('.ul1').append(first.clone());
+
+       // 动态计算ul的宽度
+
+        $('.ul1').width($('li').size()*width);
+
+        //让ul一开始的宽度为-width
+
+        $('.ul1').css('left',-width);
+
+        //单击下一个按钮，让ul向右移动
+
+       $('.sp2').click(function(){
+
+           if(oBtn){
+
+               next();
+
+           }
+
+ 
+
+       });
+
+        //单击上一个按钮，ul整体向左移动
+
+        $('.sp1').click(function(){
+
+            if(oBtn){
+
+                prev();
+
+            }
+
+        });
+
+        $('p').find('a').click(function(){
+
+            i = $(this).index();
+
+            $('.ul1').animate({
+
+                left:-width*(i+1)
+
+            },1000,function(){
+
+ 
+
+                $('.p').find('a').attr('class','');
+
+                $('.p').find('a').eq(i).attr('class','active');
+
+ 
+
+            });
+
+        });
+
+       
+
+       function prev(){
+
+           oBtn = false;
+
+           $('.ul1').animate({
+
+               left:'-='+width
+
+           },1000,function(){
+
+               i++;
+
+               if(i==len){
+
+                   $('.ul1').css('left',-width);
+
+                   i=0;
+
+               }
+
+               $('.p').find('a').attr('class','');
+
+               $('.p').find('a').eq(i).attr('class','active');
+
+               oBtn = true;
+
+           });
+
+       }
+
+       function next(){
+
+           oBtn = false;
+
+           $('.ul1').animate({
+
+               left:'+='+width
+
+           },1000,function(){
+
+               if(i==0){
+
+                   i = len;
+
+                   $('.ul1').css('left',-width*len);
+
+               }
+
+               i--;
+
+               $('.p').find('a').attr('class','');
+
+               $('.p').find('a').eq(i).attr('class','active');
+
+               oBtn = true;
+
+           });
+
+       }
+
+    });
+
+</script>
+
+</body>
+
+</html>
